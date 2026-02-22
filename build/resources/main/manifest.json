@@ -1,0 +1,20 @@
+{
+  "Group": "HC_Battlegrounds",
+  "Name": "HC_Battlegrounds",
+  "Version": "1.0.0",
+  "Description": "Faction War battlegrounds with capture-the-flag gameplay",
+  "Authors": [
+    {
+      "Name": "Server Admin"
+    }
+  ],
+  "ServerVersion": "0.0.2",
+  "Dependencies": {
+    "Hytale:EntityModule": "*",
+    "Hytale:Instances": "*"
+  },
+  "OptionalDependencies": {},
+  "DisabledByDefault": false,
+  "Main": "com.hcbattlegrounds.HC_BattlegroundsPlugin",
+  "IncludesAssetPack": true
+}

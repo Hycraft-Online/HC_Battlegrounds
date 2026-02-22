@@ -1,0 +1,119 @@
+// Battlegrounds Scoreboard HUD
+// Shows team scores, flags, timer, and per-player kills
+
+Group #BattlegroundsHud {
+  Anchor: (Width: 230, Height: 260, Top: 10, Right: 10);
+  Background: #000000(0.75);
+  LayoutMode: Top;
+  Padding: (Full: 6);
+
+  // Score header row: RED score | Timer | BLUE score
+  Group #ScoreRow {
+    Anchor: (Height: 22);
+    LayoutMode: Left;
+
+    Label #RedScore {
+      Text: "RED: 0";
+      FlexWeight: 1;
+      Style: (FontSize: 13, TextColor: #ff5555, RenderBold: true, VerticalAlignment: Center);
+    }
+    Label #Timer {
+      Text: "15:00";
+      Anchor: (Width: 60);
+      Style: (FontSize: 12, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center);
+    }
+    Label #BlueScore {
+      Text: "BLUE: 0";
+      FlexWeight: 1;
+      Style: (FontSize: 13, TextColor: #5555ff, RenderBold: true, HorizontalAlignment: End, VerticalAlignment: Center);
+    }
+  }
+
+  // Flag status row
+  Group #FlagRow {
+    Anchor: (Height: 16);
+    LayoutMode: Left;
+
+    Label #RedFlags {
+      Text: "Flags: 0";
+      FlexWeight: 1;
+      Style: (FontSize: 10, TextColor: #ff8888, VerticalAlignment: Center);
+    }
+    Label #ScoreLimit {
+      Text: "Goal: 2000";
+      Anchor: (Width: 70);
+      Style: (FontSize: 9, TextColor: #aaaaaa, HorizontalAlignment: Center, VerticalAlignment: Center);
+    }
+    Label #BlueFlags {
+      Text: "Flags: 0";
+      FlexWeight: 1;
+      Style: (FontSize: 10, TextColor: #8888ff, HorizontalAlignment: End, VerticalAlignment: Center);
+    }
+  }
+
+  // Red team separator
+  Group #RedSep {
+    Anchor: (Height: 14, Top: 4);
+    LayoutMode: Left;
+    Label #RedTeamLabel {
+      Text: "-- RED TEAM --";
+      FlexWeight: 1;
+      Style: (FontSize: 10, TextColor: #ff5555, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center);
+    }
+  }
+
+  // Red player rows (up to 5)
+  Group #RedRow0 { Visible: false; Anchor: (Height: 16); LayoutMode: Left;
+    Label #RedName0 { Text: ""; FlexWeight: 1; Style: (FontSize: 11, TextColor: #ffcccc, VerticalAlignment: Center); }
+    Label #RedKills0 { Text: "0"; Anchor: (Width: 30); Style: (FontSize: 11, TextColor: #ffcc00, RenderBold: true, HorizontalAlignment: End, VerticalAlignment: Center); }
+  }
+  Group #RedRow1 { Visible: false; Anchor: (Height: 16); LayoutMode: Left;
+    Label #RedName1 { Text: ""; FlexWeight: 1; Style: (FontSize: 11, TextColor: #ffcccc, VerticalAlignment: Center); }
+    Label #RedKills1 { Text: "0"; Anchor: (Width: 30); Style: (FontSize: 11, TextColor: #ffcc00, RenderBold: true, HorizontalAlignment: End, VerticalAlignment: Center); }
+  }
+  Group #RedRow2 { Visible: false; Anchor: (Height: 16); LayoutMode: Left;
+    Label #RedName2 { Text: ""; FlexWeight: 1; Style: (FontSize: 11, TextColor: #ffcccc, VerticalAlignment: Center); }
+    Label #RedKills2 { Text: "0"; Anchor: (Width: 30); Style: (FontSize: 11, TextColor: #ffcc00, RenderBold: true, HorizontalAlignment: End, VerticalAlignment: Center); }
+  }
+  Group #RedRow3 { Visible: false; Anchor: (Height: 16); LayoutMode: Left;
+    Label #RedName3 { Text: ""; FlexWeight: 1; Style: (FontSize: 11, TextColor: #ffcccc, VerticalAlignment: Center); }
+    Label #RedKills3 { Text: "0"; Anchor: (Width: 30); Style: (FontSize: 11, TextColor: #ffcc00, RenderBold: true, HorizontalAlignment: End, VerticalAlignment: Center); }
+  }
+  Group #RedRow4 { Visible: false; Anchor: (Height: 16); LayoutMode: Left;
+    Label #RedName4 { Text: ""; FlexWeight: 1; Style: (FontSize: 11, TextColor: #ffcccc, VerticalAlignment: Center); }
+    Label #RedKills4 { Text: "0"; Anchor: (Width: 30); Style: (FontSize: 11, TextColor: #ffcc00, RenderBold: true, HorizontalAlignment: End, VerticalAlignment: Center); }
+  }
+
+  // Blue team separator
+  Group #BlueSep {
+    Anchor: (Height: 14, Top: 2);
+    LayoutMode: Left;
+    Label #BlueTeamLabel {
+      Text: "-- BLUE TEAM --";
+      FlexWeight: 1;
+      Style: (FontSize: 10, TextColor: #5555ff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center);
+    }
+  }
+
+  // Blue player rows (up to 5)
+  Group #BlueRow0 { Visible: false; Anchor: (Height: 16); LayoutMode: Left;
+    Label #BlueName0 { Text: ""; FlexWeight: 1; Style: (FontSize: 11, TextColor: #ccccff, VerticalAlignment: Center); }
+    Label #BlueKills0 { Text: "0"; Anchor: (Width: 30); Style: (FontSize: 11, TextColor: #ffcc00, RenderBold: true, HorizontalAlignment: End, VerticalAlignment: Center); }
+  }
+  Group #BlueRow1 { Visible: false; Anchor: (Height: 16); LayoutMode: Left;
+    Label #BlueName1 { Text: ""; FlexWeight: 1; Style: (FontSize: 11, TextColor: #ccccff, VerticalAlignment: Center); }
+    Label #BlueKills1 { Text: "0"; Anchor: (Width: 30); Style: (FontSize: 11, TextColor: #ffcc00, RenderBold: true, HorizontalAlignment: End, VerticalAlignment: Center); }
+  }
+  Group #BlueRow2 { Visible: false; Anchor: (Height: 16); LayoutMode: Left;
+    Label #BlueName2 { Text: ""; FlexWeight: 1; Style: (FontSize: 11, TextColor: #ccccff, VerticalAlignment: Center); }
+    Label #BlueKills2 { Text: "0"; Anchor: (Width: 30); Style: (FontSize: 11, TextColor: #ffcc00, RenderBold: true, HorizontalAlignment: End, VerticalAlignment: Center); }
+  }
+  Group #BlueRow3 { Visible: false; Anchor: (Height: 16); LayoutMode: Left;
+    Label #BlueName3 { Text: ""; FlexWeight: 1; Style: (FontSize: 11, TextColor: #ccccff, VerticalAlignment: Center); }
+    Label #BlueKills3 { Text: "0"; Anchor: (Width: 30); Style: (FontSize: 11, TextColor: #ffcc00, RenderBold: true, HorizontalAlignment: End, VerticalAlignment: Center); }
+  }
+  Group #BlueRow4 { Visible: false; Anchor: (Height: 16); LayoutMode: Left;
+    Label #BlueName4 { Text: ""; FlexWeight: 1; Style: (FontSize: 11, TextColor: #ccccff, VerticalAlignment: Center); }
+    Label #BlueKills4 { Text: "0"; Anchor: (Width: 30); Style: (FontSize: 11, TextColor: #ffcc00, RenderBold: true, HorizontalAlignment: End, VerticalAlignment: Center); }
+  }
+}

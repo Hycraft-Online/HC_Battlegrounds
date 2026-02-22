@@ -1,0 +1,60 @@
+{
+  "Version": 4,
+  "UUID": {
+    "$binary": "nZP57kqbSwux/xSaouj6sA==",
+    "$type": "04"
+  },
+  "Seed": 1768685752414,
+  "SpawnProvider": {
+    "Type": "Global",
+    "SpawnPoint": {
+      "X": -14.5,
+      "Y": 266.0,
+      "Z": 5.5,
+      "Pitch": 0.0,
+      "Yaw": 0.0,
+      "Roll": 0.0
+    }
+  },
+  "WorldGen": {
+    "Type": "Void"
+  },
+  "WorldMap": {
+    "Type": "Disabled"
+  },
+  "ChunkStorage": {
+    "Type": "Hytale"
+  },
+  "IsTicking": true,
+  "IsBlockTicking": true,
+  "IsPvpEnabled": true,
+  "IsFallDamageEnabled": true,
+  "IsGameTimePaused": true,
+  "GameTime": "0001-04-10T08:01:22.001018370Z",
+  "ForcedWeather": "Zone2_Sunny",
+  "ClientEffects": {
+    "SunHeightPercent": 100.0,
+    "SunAngleDegrees": 0.0,
+    "BloomIntensity": 0.3,
+    "BloomPower": 8.0,
+    "SunIntensity": 0.25,
+    "SunshaftIntensity": 0.3,
+    "SunshaftScaleFactor": 4.0
+  },
+  "RequiredPlugins": {},
+  "IsSpawningNPC": false,
+  "IsSpawnMarkersEnabled": true,
+  "IsAllNPCFrozen": false,
+  "GameplayConfig": "Default",
+  "IsCompassUpdating": true,
+  "IsSavingPlayers": false,
+  "IsSavingChunks": false,
+  "SaveNewChunks": false,
+  "IsUnloadingChunks": false,
+  "IsObjectiveMarkersEnabled": true,
+  "DeleteOnUniverseStart": true,
+  "DeleteOnRemove": true,
+  "ResourceStorage": {
+    "Type": "Hytale"
+  }
+}
