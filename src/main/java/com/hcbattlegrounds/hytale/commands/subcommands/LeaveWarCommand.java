@@ -17,6 +17,11 @@ public final class LeaveWarCommand extends AbstractPlayerCommand {
         super("leave", "Leave battleground queue or active battleground");
     }
 
+    @Override
+    protected boolean canGeneratePermission() {
+        return false;
+    }
+
     protected void execute(@Nonnull CommandContext ctx, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef player, @Nonnull World world) {
         BattlegroundsManager manager = HC_BattlegroundsPlugin.getInstance().getWarManager();
         if (manager.unqueuePlayer(player.getUuid())) {

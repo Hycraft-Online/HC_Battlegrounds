@@ -13,9 +13,15 @@ import javax.annotation.Nonnull;
 public final class AdminCommand extends AbstractPlayerCommand {
     public AdminCommand() {
         super("admin", "Battleground admin commands");
+        this.requirePermission("*");
         this.addSubCommand(new AdminStartCommand());
         this.addSubCommand(new AdminEndCommand());
         this.addSubCommand(new AdminListCommand());
+    }
+
+    @Override
+    protected boolean canGeneratePermission() {
+        return false;
     }
 
     protected void execute(@Nonnull CommandContext ctx, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref,

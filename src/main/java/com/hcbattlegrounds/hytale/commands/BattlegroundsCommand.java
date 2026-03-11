@@ -28,6 +28,11 @@ public final class BattlegroundsCommand extends AbstractPlayerCommand {
         this.addSubCommand(new AdminCommand());
     }
 
+    @Override
+    protected boolean canGeneratePermission() {
+        return false;
+    }
+
     protected void execute(@Nonnull CommandContext ctx, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef player, @Nonnull World world) {
         ctx.sendMessage(Message.raw("Battlegrounds Commands:").color("#FFD700")
             .insert("\n/battlegrounds join - Queue using your faction")

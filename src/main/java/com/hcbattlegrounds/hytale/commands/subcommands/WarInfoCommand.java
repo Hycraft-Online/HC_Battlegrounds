@@ -30,6 +30,11 @@ public final class WarInfoCommand extends AbstractPlayerCommand {
         super("info", "Show faction war information");
     }
 
+    @Override
+    protected boolean canGeneratePermission() {
+        return false;
+    }
+
     protected void execute(@Nonnull CommandContext ctx, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef player, @Nonnull World world) {
         BattlegroundsManager manager = HC_BattlegroundsPlugin.getInstance().getWarManager();
         BattlegroundsManager.QueueSnapshot queueSnapshot = manager.getQueueSnapshot();

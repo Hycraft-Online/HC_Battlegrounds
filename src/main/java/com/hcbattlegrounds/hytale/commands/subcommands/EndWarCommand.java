@@ -24,6 +24,12 @@ public final class EndWarCommand extends AbstractPlayerCommand {
 
     public EndWarCommand() {
         super("end", "End a faction war (admin)");
+        this.requirePermission("*");
+    }
+
+    @Override
+    protected boolean canGeneratePermission() {
+        return false;
     }
 
     protected void execute(@Nonnull CommandContext ctx, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef player, @Nonnull World world) {

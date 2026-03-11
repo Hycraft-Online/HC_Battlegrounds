@@ -13,11 +13,17 @@ import javax.annotation.Nonnull;
 public final class ArenaCommand extends AbstractPlayerCommand {
     public ArenaCommand() {
         super("arena", "Arena configuration commands");
+        this.requirePermission("*");
         this.addSubCommand(new ArenaListCommand());
         this.addSubCommand(new ArenaCreateCommand());
         this.addSubCommand(new ArenaInfoCommand());
         this.addSubCommand(new ArenaSetSpawnCommand());
         this.addSubCommand(new ArenaSetFlagCommand());
+    }
+
+    @Override
+    protected boolean canGeneratePermission() {
+        return false;
     }
 
     protected void execute(@Nonnull CommandContext ctx, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef player, @Nonnull World world) {
