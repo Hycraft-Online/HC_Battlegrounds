@@ -268,17 +268,19 @@ public class BattlegroundsManager {
     }
 
     public boolean joinWar(UUID playerId, UUID warId, FactionRole faction) {
-        if (this.playerToWar.containsKey(playerId)) {
-            return false;
-        }
         FactionWar war = this.activeWars.get(warId);
         if (war == null || !war.isActive()) {
             return false;
         }
+        // Atomic check-and-put — only one thread can claim this player
+        if (this.playerToWar.putIfAbsent(playerId, warId) != null) {
+            return false;
+        }
         if (war.addPlayer(playerId, faction)) {
-            this.playerToWar.put(playerId, warId);
             return true;
         }
+        // war.addPlayer failed — rollback the playerToWar entry
+        this.playerToWar.remove(playerId, warId);
         return false;
     }
 
@@ -447,16 +449,16 @@ public class BattlegroundsManager {
         }
         Transform seedTransform = this.resolveSeedTransform(validRed, validBlue);
 
-        LOGGER.log(Level.INFO, "Creating arena war (arena={0}, red={1}, blue={2})", new Object[]{this.queueArenaId, validRed.size(), validBlue.size()});
+        LOGGER.log(Level.FINE, "Creating arena war (arena={0}, red={1}, blue={2})", new Object[]{this.queueArenaId, validRed.size(), validBlue.size()});
         this.createWar(this.queueArenaId, seedWorld, seedTransform).thenAccept(war -> {
-            LOGGER.log(Level.INFO, "Arena world created: {0}, waiting for world to initialize...", war.getWarId());
+            LOGGER.log(Level.FINE, "Arena world created: {0}, waiting for world to initialize...", war.getWarId());
             this.notifyParticipants(participants, "Arena created! Teleporting in 3 seconds...", Color.YELLOW);
             // Delay teleport to let the arena world fully load chunks
             HytaleServer.SCHEDULED_EXECUTOR.schedule(() -> {
-                LOGGER.log(Level.INFO, "Teleporting participants to war: {0}", war.getWarId());
+                LOGGER.log(Level.FINE, "Teleporting participants to war: {0}", war.getWarId());
                 int redCount = this.addParticipantsToWar(war, validRed, FactionRole.RED);
                 int blueCount = this.addParticipantsToWar(war, validBlue, FactionRole.BLUE);
-                LOGGER.log(Level.INFO, "Added participants to war: red={0}, blue={1}", new Object[]{redCount, blueCount});
+                LOGGER.log(Level.FINE, "Added participants to war: red={0}, blue={1}", new Object[]{redCount, blueCount});
                 if (!forceStart && (redCount == 0 || blueCount == 0)) {
                     LOGGER.log(Level.WARNING, "War cancelled: faction has no players (red={0}, blue={1})", new Object[]{redCount, blueCount});
                     this.endWar(war.getWarId());

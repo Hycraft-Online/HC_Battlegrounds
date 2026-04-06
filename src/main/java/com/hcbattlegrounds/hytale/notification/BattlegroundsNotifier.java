@@ -29,7 +29,7 @@ public class BattlegroundsNotifier {
     private final ScheduledExecutorService scheduler;
     private final Map<UUID, WarNotificationState> warStates = new ConcurrentHashMap<>();
     private ScheduledFuture<?> tickTask;
-    private boolean running;
+    private volatile boolean running;
 
     public BattlegroundsNotifier(BattlegroundsManager warManager, FlagTickSystem flagTickSystem) {
         this.warManager = warManager;
@@ -54,33 +54,38 @@ public class BattlegroundsNotifier {
     }
 
     private void tick() {
-        if (!this.running) {
-            return;
-        }
-        this.warManager.processMatchmaking();
-        this.flagTickSystem.processFlagTick();
-        this.warManager.refreshAllHuds();
-        Map<UUID, FactionWar> activeWars = this.warManager.getActiveWars();
-        this.warStates.keySet().removeIf(id -> !activeWars.containsKey(id));
-        ArrayList<UUID> expiredWars = new ArrayList<>();
-        for (Map.Entry<UUID, FactionWar> entry : activeWars.entrySet()) {
-            UUID warId = entry.getKey();
-            FactionWar war = entry.getValue();
-            boolean isNew = !this.warStates.containsKey(warId);
-            WarNotificationState state = this.warStates.computeIfAbsent(warId, k -> new WarNotificationState());
-            if (isNew) {
-                this.broadcastToWar(war, BattlegroundsMessages.warStarted());
-                state.lastScoreUpdate = System.currentTimeMillis();
+        try {
+            if (!this.running) {
+                return;
             }
-            this.checkNotifications(war, state);
-            if (!war.isExpired() && !this.warManager.hasReachedScoreLimit(war)) continue;
-            this.handleWarEnd(war);
-            expiredWars.add(warId);
-        }
-        for (UUID warId : expiredWars) {
-            this.warManager.endWar(warId);
-            this.flagTickSystem.clearWarData(warId);
-            this.warStates.remove(warId);
+            this.warManager.processMatchmaking();
+            this.flagTickSystem.processFlagTick();
+            this.warManager.refreshAllHuds();
+            Map<UUID, FactionWar> activeWars = this.warManager.getActiveWars();
+            this.warStates.keySet().removeIf(id -> !activeWars.containsKey(id));
+            ArrayList<UUID> expiredWars = new ArrayList<>();
+            for (Map.Entry<UUID, FactionWar> entry : activeWars.entrySet()) {
+                UUID warId = entry.getKey();
+                FactionWar war = entry.getValue();
+                boolean isNew = !this.warStates.containsKey(warId);
+                WarNotificationState state = this.warStates.computeIfAbsent(warId, k -> new WarNotificationState());
+                if (isNew) {
+                    this.broadcastToWar(war, BattlegroundsMessages.warStarted());
+                    state.lastScoreUpdate = System.currentTimeMillis();
+                }
+                this.checkNotifications(war, state);
+                if (!war.isExpired() && !this.warManager.hasReachedScoreLimit(war)) continue;
+                this.handleWarEnd(war);
+                expiredWars.add(warId);
+            }
+            for (UUID warId : expiredWars) {
+                this.warManager.endWar(warId);
+                this.flagTickSystem.clearWarData(warId);
+                this.warStates.remove(warId);
+            }
+        } catch (Exception e) {
+            System.err.println("[HC_Battlegrounds] Notifier tick failed: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 

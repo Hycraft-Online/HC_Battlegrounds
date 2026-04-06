@@ -1,19 +1,20 @@
 package com.hcbattlegrounds.models;
 
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Faction {
     private final FactionRole role;
     private final Set<UUID> players;
-    private int points;
+    private final AtomicInteger points;
 
     public Faction(FactionRole role) {
         this.role = role;
-        this.players = new HashSet<>();
-        this.points = 0;
+        this.players = ConcurrentHashMap.newKeySet();
+        this.points = new AtomicInteger(0);
     }
 
     public FactionRole getRole() {
@@ -41,15 +42,15 @@ public class Faction {
     }
 
     public int getPoints() {
-        return this.points;
+        return this.points.get();
     }
 
     public void addPoints(int amount) {
-        this.points += amount;
+        this.points.addAndGet(amount);
     }
 
     public void reset() {
-        this.points = 0;
+        this.points.set(0);
         this.players.clear();
     }
 }

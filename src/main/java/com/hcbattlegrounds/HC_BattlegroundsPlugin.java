@@ -13,7 +13,7 @@ import java.util.logging.Level;
 
 public class HC_BattlegroundsPlugin extends JavaPlugin {
     private static final Path CONFIG_DIR = Path.of("mods", ".hc_config", "HC_Battlegrounds");
-    private static HC_BattlegroundsPlugin instance;
+    private static volatile HC_BattlegroundsPlugin instance;
     private static final long WAR_DURATION = 900000L;
     private static final int MIN_PLAYERS_PER_FACTION = 3;
     private static final int SCORE_TO_WIN = 2000;

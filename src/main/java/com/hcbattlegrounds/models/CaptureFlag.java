@@ -37,19 +37,19 @@ public class CaptureFlag {
         return this.position;
     }
 
-    public FactionRole getControllingFaction() {
+    public synchronized FactionRole getControllingFaction() {
         return this.controllingFaction;
     }
 
-    public boolean isControlled() {
+    public synchronized boolean isControlled() {
         return this.controllingFaction != null;
     }
 
-    public boolean isControlledBy(FactionRole role) {
+    public synchronized boolean isControlledBy(FactionRole role) {
         return this.controllingFaction == role;
     }
 
-    public boolean updateCapture(int redPlayersNearby, int bluePlayersNearby) {
+    public synchronized boolean updateCapture(int redPlayersNearby, int bluePlayersNearby) {
         int progressGain;
         FactionRole previousControl = this.controllingFaction;
         this.lastRedCount = redPlayersNearby;
@@ -125,7 +125,7 @@ public class CaptureFlag {
         return previousControl != this.controllingFaction;
     }
 
-    public int getPointsGenerated(int controllingPlayersNearby, int enemyPlayersNearby) {
+    public synchronized int getPointsGenerated(int controllingPlayersNearby, int enemyPlayersNearby) {
         if (this.controllingFaction == null) {
             return 0;
         }
@@ -138,15 +138,15 @@ public class CaptureFlag {
         return controllingPlayersNearby * (controllingPlayersNearby + 1) / 2;
     }
 
-    public boolean isContested() {
+    public synchronized boolean isContested() {
         return this.currentState == FlagState.CONTESTED || this.wasContested;
     }
 
-    public FlagState getState() {
+    public synchronized FlagState getState() {
         return this.currentState;
     }
 
-    public FactionRole getCapturingTeam() {
+    public synchronized FactionRole getCapturingTeam() {
         if (this.currentState == FlagState.CAPTURING || this.currentState == FlagState.OVERTIME) {
             if (this.lastRedCount > this.lastBlueCount) {
                 return FactionRole.RED;
@@ -158,23 +158,23 @@ public class CaptureFlag {
         return null;
     }
 
-    public int getLastRedCount() {
+    public synchronized int getLastRedCount() {
         return this.lastRedCount;
     }
 
-    public int getLastBlueCount() {
+    public synchronized int getLastBlueCount() {
         return this.lastBlueCount;
     }
 
-    public int getRedCaptureProgress() {
+    public synchronized int getRedCaptureProgress() {
         return this.redCaptureProgress;
     }
 
-    public int getBlueCaptureProgress() {
+    public synchronized int getBlueCaptureProgress() {
         return this.blueCaptureProgress;
     }
 
-    public double getCapturePercentage(FactionRole role) {
+    public synchronized double getCapturePercentage(FactionRole role) {
         int progress = role == FactionRole.RED ? this.redCaptureProgress : this.blueCaptureProgress;
         return (double) progress / 100.0 * 100.0;
     }
@@ -186,7 +186,7 @@ public class CaptureFlag {
         return dx * dx + dy * dy + dz * dz <= 400.0;
     }
 
-    public void reset() {
+    public synchronized void reset() {
         this.controllingFaction = null;
         this.redCaptureProgress = 0;
         this.blueCaptureProgress = 0;

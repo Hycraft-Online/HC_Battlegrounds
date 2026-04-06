@@ -15,9 +15,9 @@ import java.util.logging.Level;
 public class HudWrapper {
     private static final HytaleLogger LOGGER = HytaleLogger.getLogger().getSubLogger("Battlegrounds-HudWrapper");
     private static final boolean MULTIPLE_HUD_AVAILABLE;
-    private static Object multipleHudInstance;
-    private static Method setCustomHudMethod;
-    private static Method hideCustomHudMethod;
+    private static volatile Object multipleHudInstance;
+    private static volatile Method setCustomHudMethod;
+    private static volatile Method hideCustomHudMethod;
 
     static {
         boolean available = false;
